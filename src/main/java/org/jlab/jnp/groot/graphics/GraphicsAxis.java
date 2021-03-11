@@ -56,6 +56,9 @@ public class GraphicsAxis extends Node2D {
         setName("axis");
     }
     
+    public void reset(){
+        dataNodes.clear();
+    }
     public AxisNode2D getAxisX(){ return axisX;}
     public AxisNode2D getAxisY(){ return axisY;}
     
@@ -159,8 +162,16 @@ public class GraphicsAxis extends Node2D {
     
     public void addDataNode(DataNode2D node){
         if(dataNodes.size()==0){
-            axisX.setTitle(node.getDataSet().getAttributes().getTitleX());
-            axisY.setTitle(node.getDataSet().getAttributes().getTitleY());
+            try{
+                axisX.setTitle(node.getDataSet().getAttributes().getTitleX());
+                axisY.setTitle(node.getDataSet().getAttributes().getTitleY());
+            } catch (Exception e){
+                System.out.println("well: may be no titles ??");
+            }
+            Rectangle2D dataRange = new Rectangle2D.Double();
+            dataRange = node.getDataBounds(dataRange);
+            setAxisLimits(dataRange);
+            
         }
         node.setParent(this);
         dataNodes.add(node);
