@@ -15,6 +15,7 @@ import org.jlab.groot.math.F1D;
 import org.jlab.jnp.graphics.attr.AttributeType;
 import org.jlab.jnp.groot.graphics.LegendNode2D.LegendStyle;
 import org.jlab.jnp.groot.settings.GRootColorPalette;
+import org.jlab.jnp.groot.settings.GRootTheme;
 
 /**
  * Demo showing some of important features of the GROOT
@@ -135,7 +136,15 @@ public class Groot4Demo {
         
         c1.getDataCanvas().getRegion(3).getGraphicsAxis().getAxisY().getAttributes().changeValue(AttributeType.AXISTICKSIZE, "-5");;
         c1.getDataCanvas().getRegion(3).getGraphicsAxis().getAxisX().getAttributes().changeValue(AttributeType.AXISTICKSIZE, "-5");;
-        
+
+
+
+        c1.getDataCanvas().applyTheme(0);
+
+
+
+
+
     }
     
     public static class Complex {
@@ -454,14 +463,19 @@ public class Groot4Demo {
         
         GRootColorPalette.getInstance().setColorPalette();
         GRootColorPalette.getInstance().setColorScheme("tab10");
-        
-        //Groot4Demo.demo1();
-        //Groot4Demo.demo2();
-        //Groot4Demo.demo3();
-        //Groot4Demo.demo4();
-        
-        TDataCanvas c = new TDataCanvas(600,400);
-        c.divide(1, 1);
-        Groot4Demo.demo5(c.getDataCanvas(), 0,false);
+
+
+
+        Groot4Demo.demo1();
+//        Groot4Demo.demo2();
+//        Groot4Demo.demo3();
+//        Groot4Demo.demo4();
+
+
+
+//        TDataCanvas c = new TDataCanvas(600,400);
+//        c.divide(1, 1);
+//        Groot4Demo.demo5(c.getDataCanvas(), 0,false);
+
     }
 }

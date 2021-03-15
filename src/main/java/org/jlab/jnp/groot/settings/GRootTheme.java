@@ -7,12 +7,14 @@ package org.jlab.jnp.groot.settings;
 
 import java.awt.BasicStroke;
 import java.awt.Font;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
+
 import org.jlab.jnp.graphics.attr.AttributeCollection;
 import org.jlab.jnp.graphics.attr.AttributeType;
+import org.jlab.jnp.utils.json.*;
 
 /**
  *
@@ -50,6 +52,7 @@ public class GRootTheme {
     private AttributeCollection dataSetAttributes = null;
     private AttributeCollection    axisAttributes = null;
     private AttributeCollection  regionAttributes = null;
+
     
     private Map<ThemeFontType, Font> themeFonts = new HashMap<>();
     
@@ -60,24 +63,32 @@ public class GRootTheme {
     }
     
     public GRootColorPalette getPalette(){ return themePalette;}
+    public AttributeCollection getAxisAttributes(){ return axisAttributes;}
+    public AttributeCollection getRegionAttributes(){ return regionAttributes;}
     
     protected final void initAttributes(){
-        
+
         axisAttributes = new AttributeCollection(
                 new AttributeType[]{
-                    AttributeType.AXISLINECOLOR,
-                    AttributeType.AXISLINEWIDTH,AttributeType.AXISLINESTYLE,
-                    AttributeType.AXISTICKSIZE,AttributeType.AXISLABELOFFSET,
-                    AttributeType.AXISTITLEOFFSET,AttributeType.AXISTITLEOFFSETVERTICAL,
-                    AttributeType.AXISDRAWBOX,AttributeType.AXISDRAWTICKS,
-                    AttributeType.AXISDRAWLINE,AttributeType.AXISDRAWGRID, 
-                    AttributeType.AXIS_DRAW_LABELS,AttributeType.AXIS_DRAW_TITLE,
-                    AttributeType.AXIS_DRAW_TICKS
-                },                    
-                new String[]{"0",
-                    "1","1",
-                    "5","5","10","10",
-                    "true","true","true","fasle","true","true","true"});
+                        AttributeType.AXISLINECOLOR,
+                        AttributeType.AXISLINEWIDTH, AttributeType.AXISLINESTYLE,
+                        AttributeType.AXISTICKSIZE,AttributeType.AXISLABELOFFSET,
+                        AttributeType.AXISTITLEOFFSET,AttributeType.AXISTITLEOFFSETVERTICAL,
+                        AttributeType.AXISDRAWBOX,AttributeType.AXISDRAWTICKS,
+                        AttributeType.AXISDRAWLINE,AttributeType.AXISDRAWGRID,
+                        AttributeType.AXIS_DRAW_LABELS,AttributeType.AXIS_DRAW_TITLE,
+                        AttributeType.AXIS_DRAW_TICKS
+                },
+                new String[]{"0","1","1","5","5","10","10",
+                    "true","true","true","false","true","true","true"});
+
+        regionAttributes = new AttributeCollection(
+                new AttributeType[]{
+                        AttributeType.FILLCOLOR, AttributeType.PAD_MARGIN_TOP,
+                        AttributeType.PAD_MARGIN_LEFT, AttributeType.PAD_MARGIN_RIGHT,
+                        AttributeType.PAD_MARGIN_BOTTOM
+                },
+                new String[]{"0", "10", "40", "40", "10"});
         
     }
     
@@ -127,5 +138,41 @@ public class GRootTheme {
                 default : return new BasicStroke(width);
 
             }*/
+    }
+
+    public void applyTheme(int ThemeID) {
+        JsonObject jsonParser = null;
+
+        try {
+            String fileName = getClass().getClassLoader().getResource("json/themes.json").getFile();
+            FileReader reader = new FileReader(fileName);
+            jsonParser = (JsonObject) Json.parse(reader);
+        } catch (NullPointerException | FileNotFoundException e){
+            System.err.println("FileNotFoundError:\nRESOURCE: 'themes' NOT FOUND!");
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        JsonArray themes = (JsonArray) jsonParser.get("themes");
+        JsonObject targetTheme = (JsonObject) themes.get(ThemeID);
+
+        JsonArray jsonAxisAttributes = (JsonArray) targetTheme.get("axisAttributes");
+        extractAttributes(jsonAxisAttributes, axisAttributes);
+
+        JsonArray jsonRegionAttributes = (JsonArray) targetTheme.get("regionAttributes");
+        extractAttributes(jsonRegionAttributes, regionAttributes);
+
+    }
+
+    private static void extractAttributes(JsonArray jsonAttributes, AttributeCollection Attributes) {
+        Arrays.stream(AttributeType.values()).forEach(Attribute -> {
+            Optional<JsonValue> targetJsonAttribute = jsonAttributes.values().stream().filter(jsonAttribute ->
+                    jsonAttribute.asObject().get("id").asInt() == Attribute.getId()).findFirst();
+
+            targetJsonAttribute.ifPresent(jsonAttribute ->
+                    Attributes.changeValue(Attribute,  String.valueOf(jsonAttribute.asObject().get("value"))));
+        });
     }
 }

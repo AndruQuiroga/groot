@@ -5,11 +5,11 @@
  */
 package org.jlab.jnp.groot.graphics;
 
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
+
 import org.jfree.pdf.PDFDocument;
 import org.jfree.pdf.PDFGraphics2D;
 import org.jfree.pdf.Page;
@@ -26,6 +26,7 @@ import org.jlab.jnp.graphics.base.Canvas2D;
 import org.jlab.jnp.graphics.base.Node2D;
 import org.jlab.jnp.graphics.base.NodeRegion2D;
 import org.jlab.jnp.graphics.base.PopupProvider;
+import org.jlab.jnp.groot.settings.GRootTheme;
 
 /**
  *
@@ -49,6 +50,12 @@ public class DataCanvas extends Canvas2D {
     
     public void initBackground(int red, int green, int blue){
         Background2D back = Background2D.createBackground(red,green,blue);
+        setBackground(back);
+    }
+
+    public void setBackgroundColor(Color color){
+        Background2D back = new Background2D();
+        back.setColor(color);
         setBackground(back);
     }
     
@@ -263,4 +270,23 @@ public class DataCanvas extends Canvas2D {
             this.paint(g2);
             pdfDoc.writeToFile(new File(filename));
     }
+
+    public void applyTheme(int themeID){
+        GRootTheme theme = GRootTheme.getInstance();
+        GRootTheme.getInstance().applyTheme(themeID);
+
+        int fillColor = theme.getRegionAttributes().getInt(AttributeType.FILLCOLOR);
+        setBackgroundColor(theme.getPalette().getColor(fillColor));
+
+        for (Node2D i : getGraphicsComponents()){
+            DataRegion pad = (DataRegion) i;
+            pad.getGraphicsAxis().getAxisX().getAttributes().copyFrom(theme.getAxisAttributes());
+            pad.getGraphicsAxis().getAxisY().getAttributes().copyFrom(theme.getAxisAttributes());
+        }
+
+        this.repaint();
+
+    }
+
+    
 }
