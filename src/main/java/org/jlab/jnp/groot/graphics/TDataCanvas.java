@@ -10,6 +10,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -23,6 +25,7 @@ import org.jlab.groot.math.F1D;
 import org.jlab.groot.math.FunctionFactory;
 import org.jlab.jnp.graphics.attr.AttributeType;
 import org.jlab.jnp.groot.settings.GRootColorPalette;
+import org.jlab.jnp.groot.settings.GRootTheme;
 
 /**
  *
@@ -37,6 +40,8 @@ public class TDataCanvas extends JFrame implements ActionListener {
     private DataCanvas dataCanvas = null;
     private StatusPane statusPane = null;
     private String     dataCanvasTitle = "c1";
+
+    String[] themeNames = GRootTheme.getThemeNames();
     
     public TDataCanvas(){
         initUI(true);
@@ -122,6 +127,7 @@ public class TDataCanvas extends JFrame implements ActionListener {
     private JMenuBar createMenuBar(){
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
+        JMenu styleMenu = new JMenu("Style");
         JMenu fileHelp = new JMenu("Help");
         
         JMenu saveMenu = new JMenu("Save...");
@@ -133,6 +139,14 @@ public class TDataCanvas extends JFrame implements ActionListener {
         
         JMenuItem colAndLine = new JMenuItem("Colors and Lines");
         JMenuItem colAndLineDark = new JMenuItem("Colors and Lines (dark)");
+
+
+        assert themeNames != null;
+        for (String themeName : themeNames){
+            JMenuItem tmp = new JMenuItem(themeName);
+            styleMenu.add(tmp);
+            tmp.addActionListener(this);
+        }
         
         colAndLine.addActionListener(this);
         colAndLineDark.addActionListener(this);
@@ -149,6 +163,7 @@ public class TDataCanvas extends JFrame implements ActionListener {
         saveSVG.addActionListener(this);
         fileMenu.add(saveMenu);
         menuBar.add(fileMenu);
+        menuBar.add(styleMenu);
         menuBar.add(fileHelp);
         return menuBar;
     }
@@ -192,7 +207,14 @@ public class TDataCanvas extends JFrame implements ActionListener {
             c.getDataCanvas().getRegion(1).getGraphicsAxis().getAxisY().getAttributes().changeValue(AttributeType.AXISLINECOLOR, "12");
             Groot4Demo.demo6(c.getDataCanvas(), 0,true);
             Groot4Demo.demo5(c.getDataCanvas(), 1,true);
-        } 
+        }
+
+        for (int i = 0; i < themeNames.length; i++) {
+            if(e.getActionCommand().compareTo(themeNames[i])==0){
+                dataCanvas.applyTheme(i);
+            }
+        }
+
     }
     
 

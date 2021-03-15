@@ -166,6 +166,32 @@ public class GRootTheme {
 
     }
 
+    public static String[] getThemeNames(){
+        JsonObject jsonParser = null;
+
+        try {
+            String fileName = GRootTheme.class.getClassLoader().getResource("json/themes.json").getFile();
+            FileReader reader = new FileReader(fileName);
+            jsonParser = (JsonObject) Json.parse(reader);
+        } catch (NullPointerException | FileNotFoundException e){
+            System.err.println("FileNotFoundError:\nRESOURCE: 'themes' NOT FOUND!");
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        JsonArray themes = (JsonArray) jsonParser.get("themes");
+        String[] themeNames = new String[themes.size()];
+
+        for (int i = 0; i < themes.size(); i++) {
+            JsonObject jTheme = (JsonObject) themes.get(i);
+            themeNames[i] = jTheme.get("themeName").asString();
+        }
+
+        return themeNames;
+    }
+
     private static void extractAttributes(JsonArray jsonAttributes, AttributeCollection Attributes) {
         Arrays.stream(AttributeType.values()).forEach(Attribute -> {
             Optional<JsonValue> targetJsonAttribute = jsonAttributes.values().stream().filter(jsonAttribute ->
