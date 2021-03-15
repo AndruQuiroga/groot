@@ -1,0 +1,58 @@
+{
+  "themes" :
+  [
+    {
+    "themeName": "Default",
+    "themeID": 0,
+    "axisAttributes": [
+      {"id": 14, "label": "AXIS_LINE_COLOR",              "value": 4},
+      {"id": 15, "label": "AXIS_LINE_STYLE",              "value": 1},
+      {"id": 12, "label": "AXIS_LINE_WIDTH",              "value": 2},
+      {"id": 10, "label": "AXIS_TICK_SIZE",               "value": 5},
+      {"id": 19, "label": "AXIS_LABEL_OFFSET",            "value": 5},
+      {"id": 20, "label": "AXIS_TITLE_OFFSET",            "value": 10},
+      {"id": 21, "label": "AXIS_TITLE_OFFSET_VERTICAL",   "value": 10},
+      {"id": 17, "label": "AXIS_DRAW_LINE",               "value": false},
+      {"id": 18, "label": "AXIS_DRAW_GRID",               "value": true},
+      {"id": 22, "label": "AXIS_DRAW_TITLE",              "value": true},
+      {"id": 23, "label": "AXIS_DRAW_LABELS",             "value": true},
+      {"id": 24, "label": "AXIS_DRAW_TICKS",              "value": true},
+      {"id": 25, "label": "AXIS_DRAW_BOX",                "value": false}],
+
+    "regionAttributes": [
+      {"id":  6, "label": "FILL_COLOR",                   "value": 0},
+      {"id": 28, "label": "PAD_MARGIN_TOP",               "value": 10},
+      {"id": 29, "label": "PAD_MARGIN_LEFT",              "value": 40},
+      {"id": 30, "label": "PAD_MARGIN_RIGHT",             "value": 40},
+      {"id": 31, "label": "PAD_MARGIN_BOTTOM",            "value": 10}]
+    },
+
+    {
+      "themeName": "Theme2",
+      "themeID": 1,
+      "axisAttributes": [
+        {"id": 14, "label": "AXIS_LINE_COLOR",              "value": 0},
+        {"id": 15, "label": "AXIS_LINE_STYLE",              "value": 1},
+        {"id": 12, "label": "AXIS_LINE_WIDTH",              "value": 5},
+        {"id": 10, "label": "AXIS_TICK_SIZE",               "value": 0},
+        {"id": 19, "label": "AXIS_LABEL_OFFSET",            "value": 5},
+        {"id": 20, "label": "AXIS_TITLE_OFFSET",            "value": 10},
+        {"id": 21, "label": "AXIS_TITLE_OFFSET_VERTICAL",   "value": 10},
+        {"id": 17, "label": "AXIS_DRAW_LINE",               "value": true},
+        {"id": 18, "label": "AXIS_DRAW_GRID",               "value": false},
+        {"id": 22, "label": "AXIS_DRAW_TITLE",              "value": true},
+        {"id": 23, "label": "AXIS_DRAW_LABELS",             "value": true},
+        {"id": 24, "label": "AXIS_DRAW_TICKS",              "value": true},
+        {"id": 25, "label": "AXIS_DRAW_BOX",                "value": true}],
+
+      "regionAttributes": [
+        {"id":  6, "label": "FILL_COLOR",                   "value": 1},
+        {"id": 28, "label": "PAD_MARGIN_TOP",               "value": 10},
+        {"id": 29, "label": "PAD_MARGIN_LEFT",              "value": 40},
+        {"id": 30, "label": "PAD_MARGIN_RIGHT",             "value": 40},
+        {"id": 31, "label": "PAD_MARGIN_BOTTOM",            "value": 10}]
+    }
+  ]
+}
+
+
